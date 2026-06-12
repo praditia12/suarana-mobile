@@ -13,6 +13,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
   );
 
+  static const heading3 = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+  );
+
   static const title = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w600,
