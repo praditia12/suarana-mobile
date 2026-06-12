@@ -58,11 +58,11 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               /// Background Circle
               Positioned(
-                top: -55,
-                right: -0,
+                top: 0,
+                right: 0,
                 child: SizedBox(
-                  width: 280,
-                  height: 280,
+                  width: 228,
+                  height: 228,
                   child: Image.asset(
                     'assets/images/login_circle.png',
                   ),
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 150),
+                    const SizedBox(height: 154),
           
                     /// Logo / Title
                     Center(
@@ -86,7 +86,9 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Text(
                             'Suarana',
-                            style: AppTextStyles.heading1
+                            style: AppTextStyles.heading1.copyWith(
+                              color: AppColors.gray1,
+                            ),
                           ),
           
                           AppGap.sm,
@@ -101,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
           
-                    SizedBox(height: 130),
+                    SizedBox(height: 110),
           
                     /// Username
                     Text(
@@ -136,13 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller:
                           passwordController,
                     ),
-          
                     AppGap.sm,
-          
-          
-          
-                    AppGap.md,
-          
                     /// Forgot Password
                     Align(
                       alignment:
@@ -155,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
           
-                    AppGap.lg,
+                    AppGap.md,
           
                     /// Login Button
                     PrimaryButton(
