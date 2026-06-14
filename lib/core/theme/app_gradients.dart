@@ -7,11 +7,21 @@ class AppGradients {
 
   static const primary =
       LinearGradient(
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
         colors: [
           AppColors.green1,
-          AppColors.green2,
+          AppColors.green4,
+        ],
+      );
+
+  static const secondary =
+      LinearGradient(
+        begin: Alignment.bottomRight,
+        end: Alignment.bottomLeft,
+        colors: [
+          AppColors.green1,
+          AppColors.green4,
         ],
       );
 }
