@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'app/router/app_router.dart';
 import 'core/theme/app_theme.dart';
-import 'features/auth/pages/login_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Music App',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
-      home: const LoginPage(),
+      routerConfig: appRouter,
     );
   }
 }

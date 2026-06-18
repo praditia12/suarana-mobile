@@ -24,4 +24,14 @@ class AppGradients {
           AppColors.green4,
         ],
       );
+
+  static const tertiary =
+      LinearGradient(
+        begin: Alignment.centerRight,
+        end: Alignment.centerLeft,
+        colors: [
+          Color(0x98104828),
+          Color(0x9827AE60),
+        ],
+      );
 }
