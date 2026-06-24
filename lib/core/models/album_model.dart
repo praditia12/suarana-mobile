@@ -1,5 +1,3 @@
-// lib/core/models/album_model.dart
-
 class AlbumModel {
   final String id;
   final String title;
@@ -21,7 +19,7 @@ class AlbumModel {
 
     return AlbumModel(
       id: json['id'] as String,
-      // Audius menyebut album sebagai "playlist" — nama ada di 'playlist_name'
+      // album sebagai "playlist" — nama ada di 'playlist_name'
       title: json['playlist_name'] as String,
       artistName: user['name'] as String? ?? 'Unknown Artist',
       artworkUrl: artwork?['480x480'] as String?,

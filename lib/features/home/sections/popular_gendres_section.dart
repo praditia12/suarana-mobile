@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_spacing.dart';
-import '../widgets/gendre_card.dart';
+import '../widgets/genre_card.dart';
 import 'home_section.dart';
 
 class PopularGenresSection extends StatelessWidget {
@@ -22,7 +22,7 @@ class PopularGenresSection extends StatelessWidget {
           spacing: AppSpacing.md,
           runSpacing: AppSpacing.md,
           children: genres.map((genre) {
-            return GenreCard(title: genre.title);
+            return GenreCard(title: genre.name);
           }).toList(),
         ),
       ),

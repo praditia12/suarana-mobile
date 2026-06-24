@@ -29,9 +29,9 @@ class PopularAlbumsSection extends StatelessWidget {
             final album = albums[index];
 
             return AlbumCard(
-              image: album.artworkUrl!,
               title: album.title,
               artist: album.artistName,
+              artworkUrl: album.artworkUrl,
             );
           },
         ),

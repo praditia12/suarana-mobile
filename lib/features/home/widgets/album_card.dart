@@ -7,32 +7,35 @@ import '../../../../core/theme/app_colors.dart';
 class AlbumCard extends StatelessWidget {
   const AlbumCard({
     super.key,
-    required this.image,
     required this.title,
     required this.artist,
+    this.artworkUrl,
+    this.onTap,
   });
 
-  final String image;
   final String title;
   final String artist;
+  final String? artworkUrl;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 112,
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius:
-                BorderRadius.circular(12),
-            child: Image.network(
-              image,
-              width: 110,
-              height: 110,
-              fit: BoxFit.cover,
-            ),
+            borderRadius: BorderRadius.circular(12),
+            child: artworkUrl != null
+                ? Image.network(
+                    artworkUrl!,
+                    width: 110,
+                    height: 110,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, _, _) => _placeholder(),
+                  )
+                : _placeholder(),
           ),
 
           AppGap.sm,
@@ -41,20 +44,26 @@ class AlbumCard extends StatelessWidget {
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.gray1
-            )
+            style: AppTextStyles.body.copyWith(color: AppColors.gray1),
           ),
 
           Text(
             artist,
             maxLines: 1,
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.gray3,
-            )
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.caption.copyWith(color: AppColors.gray3),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _placeholder() {
+    return Container(
+      width: 110,
+      height: 110,
+      color: AppColors.gray3,
+      child: const Icon(Icons.music_note, color: AppColors.gray4),
     );
   }
 }

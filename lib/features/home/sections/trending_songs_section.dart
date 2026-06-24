@@ -19,9 +19,9 @@ class TrendingSongsSection extends StatelessWidget {
       child: Column(
         children: tracks.map((track) {
           return TrendingSongTile(
-            image: track.artworkUrl,
             title: track.title,
             artist: track.artistName,
+            artworkUrl: track.artworkUrl,
           );
         }).toList(),
       ),
