@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router/route_names.dart';
@@ -9,56 +10,62 @@ import '../../../core/widgets/buttons/primary_button.dart';
 import '../../../core/widgets/common/app_gap.dart';
 import '../../../core/widgets/inputs/app_text_field.dart';
 import '../../../core/widgets/inputs/password_field.dart';
+import '../providers/auth_provider.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() =>
+  ConsumerState<LoginPage> createState() =>
       _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final usernameController =
-      TextEditingController();
-
-  final passwordController =
-      TextEditingController();
+class _LoginPageState extends ConsumerState<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
-  void _login() {
-    if (usernameController.text.isEmpty ||
-        passwordController.text.isEmpty) {
+  Future <void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              'Username dan password tidak boleh kosong',
-              style: TextStyle(
-                color: Colors.red,
-              ),
-          ),    
-        ),
+        const SnackBar(content: Text('Email dan password tidak boleh kosong')),
       );
       return;
     }
-    debugPrint('Login clicked');
-    context.go(RouteNames.home);
+
+    final success = await ref.read(authNotifierProvider.notifier).login(
+          email: email,
+          password: password,
+        );
+
+    if (!success && mounted) {
+      final error = ref.read(authNotifierProvider).error;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error?.toString() ?? 'Login gagal')),
+      );
+    }
+    // Kalau success, GoRouter redirect otomatis ke /home
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authNotifierProvider).isLoading;
+     
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
             children: [
-              /// Background Circle
+              // Background Circle
               Positioned(
                 top: 0,
                 right: 0,
@@ -71,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
           
-              /// Content
+              // Content
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.md,
@@ -82,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const SizedBox(height: 154),
           
-                    /// Logo / Title
+                    // Logo / Title
                     Center(
                       child: Column(
                         children: [
@@ -107,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
           
                     SizedBox(height: 110),
           
-                    /// Username
+                    // Username
                     Text(
                       'Username atau Email',
                       style: AppTextStyles.body.copyWith(
@@ -119,14 +126,14 @@ class _LoginPageState extends State<LoginPage> {
           
                     AppTextField(
                       controller:
-                          usernameController,
-                      hintText: 'Masukkan username atau email',
-          
+                          _emailController,
+                      hintText: 'Masukkan username atau email',         
+                      keyboardType: TextInputType.emailAddress,
                     ),
           
                     AppGap.lg,
           
-                    /// Password
+                    // Password
                     Text(
                       'Kata Sandi',
                       style: AppTextStyles.body.copyWith(
@@ -138,10 +145,10 @@ class _LoginPageState extends State<LoginPage> {
           
                     PasswordField(
                       controller:
-                          passwordController,
+                          _passwordController,
                     ),
                     AppGap.sm,
-                    /// Forgot Password
+                    // Forgot Password
                     Align(
                       alignment:
                           Alignment.centerRight,
@@ -155,38 +162,38 @@ class _LoginPageState extends State<LoginPage> {
           
                     AppGap.md,
           
-                    /// Login Button
+                    // Login Button
                     PrimaryButton(
                       title: 'Masuk',
-                      onPressed: _login,
+                      onPressed: isLoading ? null : _login,
+                      isLoading: isLoading,
                     ),
           
-                    AppGap.xl,
+                    AppGap.md,
           
-                    /// Footer
-                    Center(
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text:
-                                  'Belum punya akun? ',
-                              style: AppTextStyles.body.copyWith(
-                                color: AppColors.gray3,
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  'Daftar disini',
-                              style:
-                                  const TextStyle(
-                                color: AppColors
-                                    .green1,
-                              ),
-                            ),
-                          ],
+                    // Footer
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Belum punya akun?',
+                          style: AppTextStyles.body.copyWith(
+                            color: AppColors.gray3,
+                          ),
                         ),
-                      ),
+                        TextButton(
+                          onPressed: () => context.push(RouteNames.register),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.only(left: 4),
+                          ),
+                          child: Text(
+                            'Daftar disini',
+                            style: AppTextStyles.body.copyWith(
+                              color: AppColors.green1,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

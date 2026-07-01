@@ -1,6 +1,10 @@
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suarana_mobile/features/auth/pages/register_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../features/auth/pages/login_page.dart';
+import '../../features/auth/providers/auth_provider.dart';
 import '../../features/home/pages/home_page.dart';
 import '../../features/playlist/pages/playlist_page.dart';
 import '../../features/search/pages/search_page.dart';
@@ -8,41 +12,64 @@ import '../shell/app_shell.dart';
 import 'route_names.dart';
 
 
-final appRouter = GoRouter(
-  initialLocation: RouteNames.auth,
+final appRouterProvider = Provider<GoRouter>((ref) {
+  // Watch authStateProvider agar router rebuild saat login/logout
+  ref.watch(authStateProvider);
 
-  routes: [
-    GoRoute(
-      path: RouteNames.auth,
-      builder: (context, state) {
-        return const LoginPage();
-      },
-    ),
+    return GoRouter(
+      initialLocation: RouteNames.home,
+      redirect: (context, state) {
+        final isLoggedIn =
+            Supabase.instance.client.auth.currentUser != null;
+        final isAuthRoute =
+            state.matchedLocation == RouteNames.auth ||
+            state.matchedLocation == RouteNames.register;
 
-    ShellRoute(
-      builder: (context, state, child) {
-        return AppShell(child: child);
+        if (!isLoggedIn && !isAuthRoute) return RouteNames.auth;
+        if (isLoggedIn && isAuthRoute) return RouteNames.home;
+        return null;
       },
-      routes: [
-        GoRoute(
-          path: RouteNames.home,
-          builder: (context, state) {
-            return const HomePage();
-          },
-        ),
-        GoRoute(
-          path: RouteNames.search,
-          builder: (context, state) {
-            return const SearchPage();
-          },
-        ),
-        GoRoute(
-          path: RouteNames.playlist,
-          builder: (context, state) {
-            return const PlaylistPage();
-          },
-        ),
-      ],
-    ),
-  ],
-);
+
+    routes: [
+      GoRoute(
+        path: RouteNames.auth,
+        builder: (context, state) {
+          return const LoginPage();
+        },
+      ),
+
+      GoRoute(
+        path: RouteNames.register,
+        builder: (context, state) {
+          return const RegisterPage();
+        },
+      ),
+
+      ShellRoute(
+        builder: (context, state, child) {
+          return AppShell(child: child);
+        },
+        routes: [
+          GoRoute(
+            path: RouteNames.home,
+            builder: (context, state) {
+              return const HomePage();
+            },
+          ),
+          GoRoute(
+            path: RouteNames.search,
+            builder: (context, state) {
+              return const SearchPage();
+            },
+          ),
+          GoRoute(
+            path: RouteNames.playlist,
+            builder: (context, state) {
+              return const PlaylistPage();
+            },
+          ),
+        ],
+      ),
+    ]
+  );
+});
