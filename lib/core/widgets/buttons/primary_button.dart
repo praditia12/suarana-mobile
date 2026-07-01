@@ -5,12 +5,14 @@ import '../../theme/app_gradients.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String title;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+  final bool isLoading;
 
   const PrimaryButton({
     super.key,
     required this.title,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   @override
@@ -26,16 +28,21 @@ class PrimaryButton extends StatelessWidget {
         child: InkWell(
           borderRadius:
               BorderRadius.circular(20),
-          onTap: onPressed,
+          onTap: isLoading ? null : onPressed,
           child: Center(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.gray1,
-              ),
-            ),
+            child: isLoading
+              ? const CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: AppColors.gray1,
+                )
+              : Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.gray1,
+                  ),
+                ),
           ),
         ),
       ),
