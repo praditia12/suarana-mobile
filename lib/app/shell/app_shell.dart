@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/widgets/music/mini_player.dart';
 import '../../core/widgets/navigation/app_bottom_navbar.dart';
+import '../../features/player/providers/player_provider.dart';
 import '../router/route_names.dart';
 
-class AppShell extends StatelessWidget {
-  const AppShell({
-    super.key,
-    required this.child,
-  });
+class AppShell extends ConsumerWidget {
+  const AppShell({super.key, required this.child});
 
   final Widget child;
 
@@ -17,28 +16,21 @@ class AppShell extends StatelessWidget {
     switch (location) {
       case RouteNames.search:
         return 1;
-
       case RouteNames.playlist:
         return 2;
-
       default:
         return 0;
     }
   }
 
-  void _onTap(
-    BuildContext context,
-    int index,
-  ) {
+  void _onTap(BuildContext context, int index) {
     switch (index) {
       case 0:
         context.go(RouteNames.home);
         break;
-
       case 1:
         context.go(RouteNames.search);
         break;
-
       case 2:
         context.go(RouteNames.playlist);
         break;
@@ -46,37 +38,47 @@ class AppShell extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final location = GoRouterState.of(context).uri.path;
+    final player = ref.watch(playerProvider);
+    final hasTrack = player.hasTrack;
+    final showMiniPlayer = hasTrack && location != RouteNames.player;
+
     return Scaffold(
-      body: child,
+      body: Stack(
+        children: [
+          // Konten — beri padding bawah agar tidak tertutup mini player
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: showMiniPlayer ? 8 : 0,
+            ),
+            child: child,
+          ),
 
-      bottomNavigationBar:Stack(
-    clipBehavior: Clip.none,
-    children: [
-      AppBottomNavbar(
-        currentIndex:
-            _getCurrentIndex(location),
-        onTap: (index) =>
-            _onTap(context, index),
+          // Mini player floating
+          if (showMiniPlayer)
+            Positioned(
+              left: 16,
+              right: 16,
+              bottom: 16,
+              child: MiniPlayer(
+                imageUrl: player.currentTrack!.artworkUrl,
+                title: player.currentTrack!.title,
+                artist: player.currentTrack!.artistName,
+                isPlaying: player.isPlaying,
+                onPlayPause: () {
+                  ref.read(playerProvider.notifier).togglePlayPause();
+                },
+                onTap: () => context.push(RouteNames.player),
+              ),
+            ),
+        ],
       ),
 
-      Positioned(
-        left: 16,
-        right: 16,
-        top: -80,
-        child: MiniPlayer(
-          imageUrl:
-              'https://picsum.photos/200',
-          title: 'Film Favorit',
-          artist: 'Sheila on 7',
-          isPlaying: false,
-          onPlayPause: () {},
-          onTap: () {},
-        ),
+      bottomNavigationBar: AppBottomNavbar(
+        currentIndex: _getCurrentIndex(location),
+        onTap: (index) => _onTap(context, index),
       ),
-    ],
-  ),
     );
   }
 }

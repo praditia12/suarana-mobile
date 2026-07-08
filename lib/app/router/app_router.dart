@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/auth/pages/login_page.dart';
 import '../../features/auth/providers/auth_provider.dart';
 import '../../features/home/pages/home_page.dart';
+import '../../features/player/pages/player_page.dart';
 import '../../features/playlist/pages/playlist_page.dart';
 import '../../features/search/pages/search_page.dart';
 import '../shell/app_shell.dart';
@@ -66,6 +67,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: RouteNames.playlist,
             builder: (context, state) {
               return const PlaylistPage();
+            },
+          ),
+          GoRoute(
+            path: RouteNames.player,
+            builder: (context, state) {
+              return const PlayerPage();
             },
           ),
         ],

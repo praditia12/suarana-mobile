@@ -62,4 +62,7 @@ class TrackModel {
     final s = duration! % 60;
     return '$m:${s.toString().padLeft(2, '0')}';
   }
+
+  // getter untuk mendapatkan URL stream dari Audius
+  String get streamUrl => 'https://api.audius.co/v1/tracks/$id/stream?app_name=suarana';
 }

@@ -12,7 +12,7 @@ class MiniPlayer extends StatelessWidget {
     super.key,
     required this.title,
     required this.artist,
-    required this.imageUrl,
+    this.imageUrl,
     required this.isPlaying,
     required this.onPlayPause,
     this.onTap,
@@ -20,7 +20,7 @@ class MiniPlayer extends StatelessWidget {
 
   final String title;
   final String artist;
-  final String imageUrl;
+  final String? imageUrl;
 
   final bool isPlaying;
 
@@ -55,19 +55,13 @@ class MiniPlayer extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Image.network(
-                      imageUrl,
+                    child: imageUrl != null ? Image.network(
+                      imageUrl!,
                       width: 48,
                       height: 48,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: 48,
-                          height: 48,
-                          color: AppColors.gray3,
-                        );
-                      },
-                    ),
+                      errorBuilder: (context, error, stackTrace) => _placeholder(),
+                    ): _placeholder(),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -98,8 +92,9 @@ class MiniPlayer extends StatelessWidget {
                   IconButton(
                     onPressed: onPlayPause,
                     icon: Icon(
-                      isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.white,
+                      isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                      color: AppColors.gray1,
+                      size: 28,
                     ),
                   ),
                 ],
@@ -108,6 +103,15 @@ class MiniPlayer extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _placeholder() {
+    return Container(
+      width: 48,
+      height: 48,
+      color: AppColors.gray3,
+      child: const Icon(Icons.music_note, color: AppColors.gray5, size: 20),
     );
   }
 }

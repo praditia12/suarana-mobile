@@ -5,4 +5,5 @@ abstract final class RouteNames {
   static const home = '/';
   static const search = '/search';
   static const playlist = '/playlist';
+  static const player = '/player';
 }
