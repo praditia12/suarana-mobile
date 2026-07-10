@@ -21,6 +21,7 @@ class PlayerPage extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: AppSpacing.md),
               _PlayerHeader(),
