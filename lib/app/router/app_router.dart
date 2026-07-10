@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suarana_mobile/features/auth/pages/register_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../core/models/album_model.dart';
+import '../../features/album/pages/album_detail_page.dart';
 import '../../features/auth/pages/login_page.dart';
 import '../../features/auth/providers/auth_provider.dart';
+import '../../features/genre/pages/genre_detail_page.dart';
 import '../../features/home/pages/home_page.dart';
 import '../../features/player/pages/player_page.dart';
 import '../../features/playlist/pages/playlist_page.dart';
@@ -73,6 +76,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: RouteNames.player,
             builder: (context, state) {
               return const PlayerPage();
+            },
+          ),
+          GoRoute(
+            path: RouteNames.genre,
+            builder: (context, state) {
+              return GenreDetailPage(genre: state.extra as String);
+            },
+          ),
+          GoRoute(
+            path: RouteNames.album,
+            builder: (context, state) {
+              return AlbumDetailPage(album: state.extra as AlbumModel);
             },
           ),
         ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:suarana_mobile/app/router/route_names.dart';
 
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/models/album_model.dart';
@@ -32,6 +34,10 @@ class PopularAlbumsSection extends StatelessWidget {
               title: album.title,
               artist: album.artistName,
               artworkUrl: album.artworkUrl,
+              onTap: () => context.push(  
+                RouteNames.album,
+                extra: album,
+              ),
             );
           },
         ),

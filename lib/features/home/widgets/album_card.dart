@@ -20,40 +20,43 @@ class AlbumCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 112,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: artworkUrl != null
-                ? Image.network(
-                    artworkUrl!,
-                    width: 110,
-                    height: 110,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, _, _) => _placeholder(),
-                  )
-                : _placeholder(),
-          ),
-
-          AppGap.sm,
-
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.body.copyWith(color: AppColors.gray1),
-          ),
-
-          Text(
-            artist,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.caption.copyWith(color: AppColors.gray3),
-          ),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        width: 112,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: artworkUrl != null
+                  ? Image.network(
+                      artworkUrl!,
+                      width: 110,
+                      height: 110,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, _, _) => _placeholder(),
+                    )
+                  : _placeholder(),
+            ),
+      
+            AppGap.sm,
+      
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.body.copyWith(color: AppColors.gray1),
+            ),
+      
+            Text(
+              artist,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.caption.copyWith(color: AppColors.gray3),
+            ),
+          ],
+        ),
       ),
     );
   }

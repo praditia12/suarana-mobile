@@ -6,4 +6,6 @@ abstract final class RouteNames {
   static const search = '/search';
   static const playlist = '/playlist';
   static const player = '/player';
+  static const genre = '/genre';
+  static const album = '/album';
 }
