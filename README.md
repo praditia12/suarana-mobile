@@ -233,6 +233,11 @@ flutter build apk --release
 
 👉 Screenshot Aplikasi
 
+<img width="270" height="606" alt="Screenshot_1783866375" src="https://github.com/user-attachments/assets/ecc61e26-9698-45e8-9a7b-4869a55c2efd" />
+<img width="270" height="606" alt="Screenshot_1783866338" src="https://github.com/user-attachments/assets/74abc822-fc38-4c37-87eb-eea1da12c960" />
+<img width="270" height="606" alt="Screenshot_1783866359" src="https://github.com/user-attachments/assets/bf0501d8-7771-40a8-9051-9445e959d77b" />
+
+
 
 ---
 
