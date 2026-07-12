@@ -42,7 +42,7 @@ class AppShell extends ConsumerWidget {
     final location = GoRouterState.of(context).uri.path;
     final player = ref.watch(playerProvider);
     final hasTrack = player.hasTrack;
-    final showMiniPlayer = hasTrack && location != RouteNames.player;
+    final showMiniPlayer = hasTrack && location != RouteNames.player && location != RouteNames.profile;
 
     return Scaffold(
       body: Stack(

@@ -11,6 +11,7 @@ import '../../features/genre/pages/genre_detail_page.dart';
 import '../../features/home/pages/home_page.dart';
 import '../../features/player/pages/player_page.dart';
 import '../../features/playlist/pages/playlist_page.dart';
+import '../../features/profile/pages/profile_page.dart';
 import '../../features/search/pages/search_page.dart';
 import '../shell/app_shell.dart';
 import 'route_names.dart';
@@ -46,6 +47,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: RouteNames.register,
         builder: (context, state) {
           return const RegisterPage();
+        },
+      ),
+
+      GoRoute(
+        path: RouteNames.profile,
+        builder: (context, state) {
+          return const ProfilePage();
         },
       ),
 

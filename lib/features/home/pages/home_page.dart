@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -27,7 +28,11 @@ class HomePage extends ConsumerWidget {
     final error = trendingAsync.error ?? albumsAsync.error ?? genreAsync.error;
 
     return Scaffold(
-      appBar: const HomeAppBar(),
+      appBar: HomeAppBar(
+        onPressed: () {
+          context.push('/profile');
+        },
+      ),
       body: SafeArea(
         child: RefreshIndicator(
           color: AppColors.background,

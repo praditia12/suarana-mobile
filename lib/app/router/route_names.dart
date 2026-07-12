@@ -8,4 +8,5 @@ abstract final class RouteNames {
   static const player = '/player';
   static const genre = '/genre';
   static const album = '/album';
+  static const profile = '/profile';
 }
