@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../app/router/route_names.dart';
 import '../../../core/models/track_model.dart';
 import '../../player/providers/player_provider.dart';
-import '../widgets/trending_song_tile.dart';
+import '../../../core/widgets/music/track_tile.dart';
 import 'home_section.dart';
 
 class TrendingSongsSection extends ConsumerWidget {
@@ -24,9 +24,9 @@ class TrendingSongsSection extends ConsumerWidget {
       child: Column(
         children: List.generate(tracks.length, (index) {
           final track = tracks[index];
-          return TrendingSongTile(
+          return TrackTile(
             title: track.title,
-            artist: track.artistName,
+            artistName: track.artistName,
             artworkUrl: track.artworkUrl,
             onTap: () {
               context.push(RouteNames.player);

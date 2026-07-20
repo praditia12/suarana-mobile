@@ -16,65 +16,82 @@ class PlayerPage extends ConsumerWidget {
     if (track == null) return const SizedBox.shrink();
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: AppSpacing.md),
-              _PlayerHeader(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-              const SizedBox(height: AppSpacing.lg),
-              _CoverArt(artworkUrl: track.artworkUrl),
-
-              const SizedBox(height: AppSpacing.lg),
-              _TrackInfo(
-                title: track.title,
-                artist: track.artistName,
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                0,
+                AppSpacing.md,
+                bottomInset + AppSpacing.xl,
               ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: AppSpacing.md),
+                    _PlayerHeader(),
 
-              const SizedBox(height: AppSpacing.md),
-              const _ActionButtons(),
+                    const SizedBox(height: AppSpacing.lg),
+                    _CoverArt(artworkUrl: track.artworkUrl),
 
-              const SizedBox(height: AppSpacing.lg),
-              _ProgressBar(
-                position: player.position,
-                duration: player.duration,
-                onSeek: (val) {
-                  ref.read(playerProvider.notifier).seek(val);
-                },
-              ),
+                    const SizedBox(height: AppSpacing.lg),
+                    _TrackInfo(
+                      title: track.title,
+                      artist: track.artistName,
+                    ),
 
-              const SizedBox(height: AppSpacing.lg),
-              // Error message
-              if (player.error != null)
-                Padding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.sm),
-                  child: Text(
-                    player.error!,
-                    style: const TextStyle(color: Colors.redAccent, fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
+                    const SizedBox(height: AppSpacing.md),
+                    const _ActionButtons(),
+
+                    const SizedBox(height: AppSpacing.lg),
+                    _ProgressBar(
+                      position: player.position,
+                      duration: player.duration,
+                      onSeek: (val) {
+                        ref.read(playerProvider.notifier).seek(val);
+                      },
+                    ),
+
+                    const SizedBox(height: AppSpacing.lg),
+                    // Error message
+                    if (player.error != null)
+                      Padding(
+                        padding: EdgeInsets.only(bottom: AppSpacing.sm),
+                        child: Text(
+                          player.error!,
+                          style: const TextStyle(color: Colors.redAccent, fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+
+                    // Playback Controls — onPrevious and onNext:
+                    _PlaybackControls(
+                      isPlaying: player.isPlaying,
+                      isLoading: player.isLoading,
+                      onPlayPause: () => ref.read(playerProvider.notifier).togglePlayPause(),
+                      onPrevious: player.hasPrevious
+                          ? () => ref.read(playerProvider.notifier).previous()
+                          : null,
+                      onNext: player.hasNext
+                          ? () => ref.read(playerProvider.notifier).next()
+                          : null,
+                    ),
+
+                    const SizedBox(height: AppSpacing.xl),
+                  ],
                 ),
-
-              // Playback Controls — onPrevious and onNext:
-              _PlaybackControls(
-                isPlaying: player.isPlaying,
-                isLoading: player.isLoading,
-                onPlayPause: () => ref.read(playerProvider.notifier).togglePlayPause(),
-                onPrevious: player.hasPrevious
-                    ? () => ref.read(playerProvider.notifier).previous()
-                    : null,
-                onNext: player.hasNext
-                    ? () => ref.read(playerProvider.notifier).next()
-                    : null,
               ),
-
-              const SizedBox(height: AppSpacing.xl),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
